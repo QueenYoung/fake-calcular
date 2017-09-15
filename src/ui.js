@@ -3,39 +3,46 @@ const result = document.querySelector('.result');
 const screenWidth = document.querySelector('.screen').clientWidth;
 result.style.fontSize = `${Math.floor(screenWidth / 6 * 1.3)}px`;
 
+localStorage.lastPass = '';
 const inputElement = document.querySelector('input');
 function touch() {
-  let prevTouch = null;
+  let prevTouch = document.querySelector('body');
   return function(e) {
     const { target: button } = e;
     if (button.classList.contains('operator')) {
       button.classList.add('active');
-      prevTouch && prevTouch.classList.remove('active');
+      prevTouch.classList.remove('active');
     } else {
-      prevTouch && prevTouch.classList.remove('active');
+      prevTouch.classList.remove('active');
     }
 
     if (button.classList.contains('number')) {
-      numberPass(button);
+      numberPass(button, prevTouch.classList.contains('operator'));
     }
     prevTouch = button;
   };
 }
 
-document
-  .querySelector('.ac')
-  .addEventListener('click', () => { result.textContent = 0; changeFont();});
+document.querySelector('.ac').addEventListener('click', () => {
+  result.textContent = 0;
+  changeFont();
+  localStorage.lastPass = '';
+});
 
-function numberPass(target) {
+function numberPass(target, needBeClear) {
+  if (needBeClear) {
+    result.textContent = '';
+  }
   let number = target.textContent;
   if (result.textContent.length === 11) return;
+  localStorage.lastPass += number;
+  console.log(localStorage.lastPass);
 
   let prevShow = result.textContent.split(',');
   if (prevShow.length === 1 && prevShow[0][0] === '0') {
     prevShow[0] = [];
   }
   result.textContent = addComma(prevShow, number);
-  // inputElement.value = result.textContent;
   changeFont();
 }
 
