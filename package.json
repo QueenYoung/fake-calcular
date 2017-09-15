@@ -1,0 +1,22 @@
+{
+  "devDependencies": {
+    "css-loader": "^0.28.7",
+    "node-sass": "^4.5.3",
+    "sass-loader": "^6.0.6",
+    "style-loader": "^0.18.2",
+    "webpack": "^3.5.6",
+    "webpack-dev-server": "^2.8.2"
+  },
+  "dependencies": {
+    "html-webpack-plugin": "^2.30.1"
+  },
+  "scripts": {
+    "start": "webpack-dev-server --open",
+    "build": "webpack -p"
+  },
+  "name": "fake-ios-calcular",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "Kui Yang <c6swift@gmail.com>",
+  "license": "MIT"
+}
