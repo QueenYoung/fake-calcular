@@ -1,6 +1,9 @@
 $numberColor: #333;
 $operatorColor: #ff8e00;
 $otherColor: #a5a5a5;
+* {
+  box-sizing: border-box;
+}
 
 @media screen and (max-width: 500px) {
   .calcular {
@@ -14,11 +17,11 @@ $otherColor: #a5a5a5;
       background-color: black;
       // height: 100px;
       .result {
-        margin: 0 20px;
+        padding: 0 20px;
+        margin: 0;
         position: absolute;
         right: 0;
         bottom: 0;
-        font-size: 5rem;
         color: white;
       }
     }
