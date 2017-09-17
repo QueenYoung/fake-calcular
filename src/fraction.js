@@ -1,7 +1,7 @@
 class Fraction {
   constructor(pattern, denominator) {
     if (typeof pattern === 'string') {
-      let match = pattern.match(/(\d+)\/(\d+)/);
+      let match = pattern.match(/(-?\d+)\/(\d+)/);
       if (match) {
         this.numerator = match[1];
         this.denominator = match[2];
@@ -20,7 +20,9 @@ class Fraction {
   }
 
   _gcd(a, b) {
-    return !b ? a : this._gcd(b, a % b);
+    a = Math.abs(a);
+    b = Math.abs(b);
+    return !b ? a : this._gcd(Math.abs(b), a % b);
   }
   
   _reduce() {
@@ -44,9 +46,33 @@ class Fraction {
     return fra._reduce();
   }
 
+  substrct(other) {
+    if (!(other instanceof Fraction)) { return; }
+    return this.add(other.multiply(-1));
+  }
+
+  multiply(number) {
+    number = +number;
+    if (typeof number !== 'number') {
+      throw TypeError('This is not a number!');
+    }
+    return new Fraction(this.numerator * number, this.denominator)._reduce();
+  }
+
+  divide(number) {
+    let { numerator, denominator } = this;
+    if (numerator % number === 0) {
+      numerator /= number;
+    } else {
+      denominator *= number;
+    }
+    return new Fraction(numerator, denominator);
+  }
+
   toString() {
     return `${this.numerator}/${this.denominator}`;
   }
 }
 
-module.exports = Fraction;
+export default Fraction;
+// module.exports = Fraction;
