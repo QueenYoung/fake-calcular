@@ -5,8 +5,8 @@ result.style.fontSize = `${Math.floor(screenWidth / 6 * 1.3)}px`;
 
 const inputElement = document.querySelector('input');
 import Input from './do';
-const input = new Input;
-let lassPass = '';
+const input = new Input();
+let lastPress = '';
 
 function touch() {
 	let prevTouch = document.querySelector('body');
@@ -22,14 +22,14 @@ function touch() {
 		if (button.classList.contains('number')) {
 			numberPass(button, prevTouch.classList.contains('operator'));
 		}
-    prevTouch = button;
-    lassPass = prevTouch.textContent;
+		prevTouch = button;
+		lastPress = prevTouch.textContent;
 	};
 }
 
 document.querySelector('.ac').addEventListener('click', () => {
-  result.textContent = 0;
-  input.clear();
+	result.textContent = 0;
+	input.clear();
 	changeFont();
 });
 
@@ -37,8 +37,8 @@ function numberPass(target, needBeClear) {
 	if (needBeClear) {
 		result.textContent = '';
 	}
-  let number = target.textContent;
-  input.getInput(number);
+	let number = target.textContent;
+	input.getInput(number);
 	if (result.textContent.length === 11) return;
 
 	let prevShow = result.textContent.split(',');
@@ -72,20 +72,33 @@ function changeFont() {
 	}
 }
 
-
 const compute = e => {
-  input.getInput(` ${e.target.textContent} `);
-}
+	input.getInput(` ${e.target.textContent} `);
+};
 
 const getResult = () => {
-  let value = input.eval();
-  result.textContent = value;
-  input.setTo(value);
-}
+	let lastSpace;
+	let prevOperation;
+	return function() {
+		try {
+			if (lastPress === '=') {
+				input.str += prevOperation;
+			}
+			lastSpace = input.str.lastIndexOf(' ');
+			prevOperation = ' ' + input.str.slice(lastSpace - 1);
+      let value = input.eval();
+      result.textContent = value;
+      input.setTo(value);
+		} catch (e) {
+      console.log(e);
+			result.textContent = 'Error';
+    }
+    changeFont();
+	};
+};
 
-document.querySelector('#add').addEventListener('click', compute);
-document.querySelector('#computer').addEventListener('click', getResult);
-document.querySelector('#subtract').addEventListener('click', compute);
-document.querySelector('#multiply').addEventListener('click', compute);
-document.querySelector('#divide').addEventListener('click', compute);
+document
+	.querySelectorAll('#add, #subtract, #multiply, #divide')
+	.forEach(element => element.addEventListener('click', compute));
+document.querySelector('#computer').addEventListener('click', getResult());
 // document.querySelector('#percentage').addEventListener('click', percentage);

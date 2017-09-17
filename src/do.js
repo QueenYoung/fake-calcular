@@ -24,6 +24,9 @@ class Input {
     this.str = str;
   }
 
+  /**
+   * 针对按了多次运算符的情况, 取最后一个运算符
+   */
 	_normailze() {
     this._changeSignToComputer();
 		this.str = this.str.replace(/([+\-*/]\s+)+(?=\d)/g, match => {
@@ -31,8 +34,12 @@ class Input {
     });
 	}
 
+  /**
+   * 因为 UI 上显示的符号和数学符号不一样, 所以需要替换
+   */
 	_changeSignToComputer() {
     const toSign = '/*-+';
+    this.str = this.str.trim();
 		this.str = this.str.replace(/[÷Ｘ－＋]/gu, match => {
 			const index = '÷Ｘ－＋'.indexOf(match);
 			if (~index) {

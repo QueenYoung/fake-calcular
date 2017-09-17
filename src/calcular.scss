@@ -5,81 +5,81 @@ $otherColor: #a5a5a5;
   box-sizing: border-box;
 }
 
-@media screen and (max-width: 500px) {
-  .calcular {
+.calcular {
+  background-color: black;
+  display: flex;
+  flex-direction: column;
+  .screen {
+    flex: 1 200px;
+    position: relative;
     background-color: black;
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    .screen {
-      flex: 1 200px;
-      position: relative;
-      background-color: black;
-      // height: 100px;
-      .result {
-        padding: 0 20px;
-        margin: 0;
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        color: white;
+    .result {
+      padding: 0 20px;
+      margin: 0;
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      color: white;
+    }
+  }
+
+  .buttons {
+    flex: 2;
+    margin: 20px;
+    display: grid;
+    grid-template: repeat(5, minmax(66px, 1fr)) / repeat(4, minmax(66px, 1fr));
+    grid-gap: 20px;
+    button {
+      border: none;
+      border-radius: 50%;
+      grid-row: auto / span 1;
+      grid-column: auto / span 1;
+      font-size: 20px;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transition: all 0.3s ease-in;
+    }
+
+    .number {
+      color: white;
+      background-color: $numberColor;
+      &.zero {
+        grid-column: auto / span 2;
+        border-radius: 20% / 50%;
+        justify-content: flex-start;
+        padding-left: 15%;
+      }
+
+      &:hover {
+        background-color: lighten($numberColor, 30);
+      }
+    }
+    .operator {
+      color: white;
+      background: $operatorColor;
+      &:hover {
+        background-color: lighten($operatorColor, 30);
+      }
+      &.active {
+        color: $operatorColor;
+        background: white;
       }
     }
 
-    .buttons {
-      flex: 2;
-      margin: 20px;
-      display: grid;
-      grid-template: repeat(5, minmax(66px, 1fr)) / repeat(4, minmax(66px, 1fr));
-      grid-gap: 20px;
-      button {
-        border: none;
-        border-radius: 50%;
-        grid-row: auto / span 1;
-        grid-column: auto / span 1;
-        font-size: 20px;
-        font-weight: bold;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: all 0.3s ease-in;
-      }
-
-      .number {
-        color: white;
-        background-color: $numberColor;
-        &.zero {
-          grid-column: auto / span 2;
-          border-radius: 20% / 50%;
-          justify-content: flex-start;
-          padding-left: 15%;
-        }
-
+    @for $i from 1 through 3 {
+      button:nth-child(#{$i}) {
+        background: $otherColor;
+        color: black;
         &:hover {
-          background-color: lighten($numberColor, 30);
-        }
-      }
-      .operator {
-        color: white;
-        background: $operatorColor;
-        &:hover {
-          background-color: lighten($operatorColor, 30);
-        }
-        &.active {
-          color: $operatorColor;
-          background: white;
-        }
-      }
-
-      @for $i from 1 through 3 {
-        button:nth-child(#{$i}) {
-          background: $otherColor;
-          color: black;
-          &:hover {
-            background: lighten($otherColor, 20);
-          }
+          background: lighten($otherColor, 20);
         }
       }
     }
+  }
+  @media screen and (min-width: 500px) {
+    max-width: 80%;
+    margin: 0 auto;
   }
 }
