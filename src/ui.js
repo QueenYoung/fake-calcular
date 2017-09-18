@@ -1,7 +1,7 @@
 document.querySelector('.buttons').addEventListener('click', touch());
 const result = document.querySelector('.result');
 const screenWidth = document.querySelector('.screen').clientWidth;
-let normalFontSize = Math.floor(screenWidth / 6 * 1.3);
+let normalFontSize = 80;
 result.style.fontSize = normalFontSize + 'px';
 
 const inputElement = document.querySelector('input');
@@ -63,9 +63,13 @@ function addComma(result, input) {
 }
 
 function changeFont() {
-		const trueLength = result.textContent.length - 2;
-		const theSize = Math.floor(screenWidth / trueLength * 1.3);
-		result.style.fontSize = Math.min(normalFontSize, theSize) + 'px';
+	if (result.textContent.length > 7) {
+		const theSize = Math.floor(screenWidth / 7);
+		// result.style.fontSize = Math.min(normalFontSize, theSize) + 'px';
+		result.style.fontSize = theSize + 'px';
+	} else {
+		result.style.fontSize = normalFontSize + 'px';
+	}
 }
 
 const compute = e => {
