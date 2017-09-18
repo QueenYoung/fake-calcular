@@ -8,6 +8,7 @@ $otherColor: #a5a5a5;
 .calcular {
   background-color: black;
   display: flex;
+  width: 100%;
   flex-direction: column;
   .screen {
     flex: 1 200px;
@@ -79,7 +80,7 @@ $otherColor: #a5a5a5;
     }
   }
   @media screen and (min-width: 500px) {
-    width: 414px;
+    max-width: 414px;
     margin: 0 auto;
   }
 }

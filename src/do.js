@@ -2,7 +2,7 @@
 import Fraction from './fraction';
 class Input {
 	constructor(input = '') {
-		this.str = input;
+    this.str = input;
     this.operator = {
       '*': Fraction.multiply,
       '/': Fraction.divide,
@@ -91,7 +91,7 @@ class Input {
       }
     }
     let result = eval(String(stack[0]));
-    if (String(result).length > 11) {
+    if (String(result).length > 9) {
       result = result.toFixed(9);
     }
     return result;

@@ -36,19 +36,22 @@ document.querySelector('.ac').addEventListener('click', () => {
 
 
 // TODO: 使用 Intl.NumberFormat().format 来修改数字
+let numberFormat = new Intl.NumberFormat('en-US', {
+	maximumFractionDigits: 9
+});
 function numberPass(target, needBeClear) {
 	if (needBeClear) {
 		result.textContent = '';
 	}
 	let number = target.textContent;
 	input.getInput(number);
-	if (result.textContent.length === 11) return;
+	let text = result.textContent;
+	if ((text.match(/\d/g) || '').length > 8) return;
 
-	let prevShow = result.textContent.split(',');
-	if (prevShow.length === 1 && prevShow[0][0] === '0') {
-		prevShow[0] = [];
-	}
-	result.textContent = addComma(prevShow, number);
+	text = text.replace(/\,/g, () => '');
+	result.textContent = number === '.'
+		? text + number
+		: numberFormat.format(text + number);
 	changeFont();
 }
 

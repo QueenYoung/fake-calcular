@@ -1,6 +1,7 @@
 {
   "devDependencies": {
     "css-loader": "^0.28.7",
+    "jest": "^21.1.0",
     "node-sass": "^4.5.3",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.18.2",
@@ -13,7 +14,8 @@
   },
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack -p"
+    "build": "webpack -p",
+    "test": "jest"
   },
   "name": "fake-ios-calcular",
   "version": "1.0.0",
