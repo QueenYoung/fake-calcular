@@ -1,7 +1,8 @@
 document.querySelector('.buttons').addEventListener('click', touch());
 const result = document.querySelector('.result');
 const screenWidth = document.querySelector('.screen').clientWidth;
-result.style.fontSize = `${Math.floor(screenWidth / 6 * 1.3)}px`;
+let normalFontSize = Math.floor(screenWidth / 6 * 1.3);
+result.style.fontSize = normalFontSize + 'px';
 
 const inputElement = document.querySelector('input');
 import Input from './do';
@@ -62,14 +63,9 @@ function addComma(result, input) {
 }
 
 function changeFont() {
-	let resultWidth = result.offsetWidth;
-	if (resultWidth > screenWidth) {
 		const trueLength = result.textContent.length - 2;
-		result.style.fontSize = `${Math.floor(screenWidth / trueLength * 1.3)}px`;
-		console.log(result.style.fontSize);
-	} else {
-		result.style.fontSize = `${Math.floor(screenWidth / 6 * 1.3)}px`;
-	}
+		const theSize = Math.floor(screenWidth / trueLength * 1.3);
+		result.style.fontSize = Math.min(normalFontSize, theSize) + 'px';
 }
 
 const compute = e => {
@@ -77,28 +73,47 @@ const compute = e => {
 };
 
 const getResult = () => {
+	// 用来跟踪上一次输入的数据, 以支持重复操作.
 	let lastSpace;
 	let prevOperation;
 	return function() {
 		try {
+			// 将上一次的操作添加进来.
 			if (lastPress === '=') {
 				input.str += prevOperation;
 			}
 			lastSpace = input.str.lastIndexOf(' ');
 			prevOperation = ' ' + input.str.slice(lastSpace - 1);
-      let value = input.eval();
-      result.textContent = value;
-      input.setTo(value);
+			if (lastPress === '%') {
+				prevOperation = prevOperation.replace(/\d+/, match => match * 100);
+			}
+
+			let value = input.eval() + '';
+
+			result.textContent = value;
+			input.setTo(value);
 		} catch (e) {
-      console.log(e);
+			console.log(e);
 			result.textContent = 'Error';
-    }
-    changeFont();
+		}
+		changeFont();
 	};
 };
+
+
+function percentage(e) {
+	result.textContent = +result.textContent / 100;
+	input.setTo(input.str.replace(/\d+$/, match => match / 100));
+}
+function toNegative(e) {
+	result.textContent = +result.textContent * -1;
+	input.setTo(input.str.replace(/\d+$/, match => match * -1));
+}
+
 
 document
 	.querySelectorAll('#add, #subtract, #multiply, #divide')
 	.forEach(element => element.addEventListener('click', compute));
 document.querySelector('#computer').addEventListener('click', getResult());
-// document.querySelector('#percentage').addEventListener('click', percentage);
+document.querySelector('#percentage').addEventListener('click', percentage);
+document.querySelector('.sign').addEventListener('click', toNegative);
