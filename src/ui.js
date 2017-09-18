@@ -34,6 +34,8 @@ document.querySelector('.ac').addEventListener('click', () => {
 	changeFont();
 });
 
+
+// TODO: 使用 Intl.NumberFormat().format 来修改数字
 function numberPass(target, needBeClear) {
 	if (needBeClear) {
 		result.textContent = '';
@@ -59,7 +61,7 @@ function addComma(result, input) {
 	for (let i = 0; i < Math.ceil(length / 3); ++i) {
 		show.push(result.slice(i * 3, (i + 1) * 3));
 	}
-	return show.reverse().join(',');
+	return show.join(',');
 }
 
 function changeFont() {

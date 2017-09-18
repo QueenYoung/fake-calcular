@@ -1,13 +1,13 @@
-import R from 'ramda';
+// import R from 'ramda';
 import Fraction from './fraction';
 class Input {
 	constructor(input = '') {
 		this.str = input;
     this.operator = {
-      '*': R.multiply,
-      '/': R.divide,
-      '+': R.add,
-      '-': R.subtract
+      '*': Fraction.multiply,
+      '/': Fraction.divide,
+      '+': Fraction.add,
+      '-': Fraction.subtract
     }
 	}
 
@@ -81,7 +81,7 @@ class Input {
 
   eval() {
     const reversePolish = this._toReversePolish();
-    console.log(reversePolish);
+
     let stack = [];
     for (let symbol of reversePolish) {
       if (/\d+/.test(symbol)) {
@@ -90,7 +90,11 @@ class Input {
         stack.push(this.operator[symbol](...stack.splice(-2)));
       }
     }
-    return stack[0];
+    let result = eval(String(stack[0]));
+    if (String(result).length > 11) {
+      result = result.toFixed(9);
+    }
+    return result;
   }
 }
 
