@@ -18,18 +18,17 @@ function normailze(a, b) {
   return [a, b];
 }
 
+
+let reduce = Symbol('reduce');
 class Fraction {
   constructor(numerator, denominator) {
     this.numerator = numerator;
     this.denominator = denominator;
-
-		this._reduce();
+    this[reduce]();
   }
 
-  _reduce() {
-
-
-		// 现将小数点装化成整数. 比如 0.1 转化成 1 / 10 这样的
+  [reduce]() {
+    // 现将小数点装化成整数. 比如 0.1 转化成 1 / 10 这样的
     let fra1 = (String(this.numerator).match(/\.\d+/) || [''])[0].length;
     let fra2 = (String(this.denominator).match(/\.\d+/) || [''])[0].length;
 
@@ -42,20 +41,21 @@ class Fraction {
 
     this.numerator /= g;
     this.denominator /= g;
+    return this;
   }
 
   static add(a, b) {
-		[a, b] = normailze(a, b);
+    [a, b] = normailze(a, b);
     const newDenominator = _lcm(a.denominator, b.denominator);
     const newNumerator =
       a.numerator * newDenominator / a.denominator +
-			b.numerator * newDenominator / b.denominator;
+      b.numerator * newDenominator / b.denominator;
     return new Fraction(newNumerator, newDenominator);
   }
 
   static subtract(a, b) {
-		[a, b] = normailze(a, b);
-    return Fraction.add(a, Fraction.multiply(b, -1));
+    [a, b] = normailze(a, b);
+    return this.add(a, Fraction.multiply(b, -1));
   }
 
   static multiply(a, b) {
@@ -63,15 +63,15 @@ class Fraction {
     return new Fraction(
       a.numerator * b.numerator,
       a.denominator * b.denominator
-    )._reduce();
+    );
   }
 
   static divide(a, b) {
-		[a, b] = normailze(a, b);
-		if (b.numerator === 0) {
-			throw TypeError("Can't divide by 0");
-		}
-		return Fraction.multiply(a, new Fraction(b.denominator, b.numerator));
+    [a, b] = normailze(a, b);
+    if (b.numerator === 0) {
+      throw TypeError('Can\'t divide by 0');
+    }
+    return this.multiply(a, new Fraction(b.denominator, b.numerator));
   }
 
   toString() {

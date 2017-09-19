@@ -1,5 +1,11 @@
 // import R from 'ramda';
 import Fraction from './fraction';
+
+// for private 
+const changeSignToComputer = Symbol('changesigntocomputer');
+const normalize = Symbol('normalize');
+const toReversePolish = Symbol('toreversepolish');
+
 class Input {
 	constructor(input = '') {
     this.str = input;
@@ -8,7 +14,7 @@ class Input {
       '/': Fraction.divide,
       '+': Fraction.add,
       '-': Fraction.subtract
-    }
+    };
 	}
 
 
@@ -27,8 +33,8 @@ class Input {
   /**
    * 针对按了多次运算符的情况, 取最后一个运算符
    */
-	_normailze() {
-    this._changeSignToComputer();
+	[normalize]() {
+    this[changeSignToComputer]();
 		this.str = this.str.replace(/([+\-*/]\s+)+(?=\d)/g, match => {
       return match.slice(-2);
     });
@@ -37,7 +43,7 @@ class Input {
   /**
    * 因为 UI 上显示的符号和数学符号不一样, 所以需要替换
    */
-	_changeSignToComputer() {
+	[changeSignToComputer]() {
     const toSign = '/*-+';
     this.str = this.str.trim();
 		this.str = this.str.replace(/[÷Ｘ－＋]/gu, match => {
@@ -50,8 +56,8 @@ class Input {
 		});
 	}
 
-	_toReversePolish() {
-    this._normailze();
+	[toReversePolish]() {
+    this[normalize]();
 
     let queue = [];
     let stack = [];
@@ -80,7 +86,7 @@ class Input {
   }
 
   eval() {
-    const reversePolish = this._toReversePolish();
+    const reversePolish = this[toReversePolish]();
 
     let stack = [];
     for (let symbol of reversePolish) {
