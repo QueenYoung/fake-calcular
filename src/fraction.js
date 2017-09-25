@@ -55,7 +55,7 @@ class Fraction {
 
   static subtract(a, b) {
     [a, b] = normailze(a, b);
-    return this.add(a, Fraction.multiply(b, -1));
+    return Fraction.add(a, Fraction.multiply(b, -1));
   }
 
   static multiply(a, b) {
@@ -71,7 +71,7 @@ class Fraction {
     if (b.numerator === 0) {
       throw TypeError('Can\'t divide by 0');
     }
-    return this.multiply(a, new Fraction(b.denominator, b.numerator));
+    return Fraction.multiply(a, new Fraction(b.denominator, b.numerator));
   }
 
   toString() {
