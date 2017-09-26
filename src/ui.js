@@ -109,7 +109,7 @@ const getResult = () => {
       lastSpace = input.str.lastIndexOf(' ');
       prevOperation = ' ' + input.str.slice(lastSpace - 1);
       if (lastPress === '%') {
-        prevOperation = prevOperation.replace(/\d+$/, match => match * 100);
+        prevOperation = prevOperation.replace(/\d+/, match => match * 100);
       }
 
       let value = input.eval();
