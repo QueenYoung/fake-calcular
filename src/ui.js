@@ -35,7 +35,6 @@ document.querySelector('.ac').addEventListener('click', () => {
   changeFont();
 });
 
-// TODO: 使用 Intl.NumberFormat().format 来修改数字
 let numberFormat = new Intl.NumberFormat('en-US', {
   maximumFractionDigits: lengthLimit
 });
@@ -79,6 +78,7 @@ function adjustText(value) {
   const digitsLength = num => R.compose(Math.ceil, Math.log10)(num);
   if (integer > 10e8 && Number.isSafeInteger(value)) {
     let digits = digitsLength(integer);
+    // + 2 是因为 e+ 占两位的缘故.
     const lengthOfExp = digitsLength(digits) + 2;
     let exp = integer.toExponential(lengthLimit - lengthOfExp);
     showText = exp;
@@ -109,7 +109,7 @@ const getResult = () => {
       lastSpace = input.str.lastIndexOf(' ');
       prevOperation = ' ' + input.str.slice(lastSpace - 1);
       if (lastPress === '%') {
-        prevOperation = prevOperation.replace(/\d+/, match => match * 100);
+        prevOperation = prevOperation.replace(/\d+$/, match => match * 100);
       }
 
       let value = input.eval();
@@ -124,11 +124,13 @@ const getResult = () => {
 
 function percentage() {
   result.textContent = +result.textContent / 100;
-  input.setTo(input.str.replace(/(\d+\.)?\d+$/, match => match / 100));
+  const theLastNumber = /(\d+\.)?\d+$/;
+  input.setTo(input.str.replace(theLastNumber, match => match / 100));
 }
 function toNegative() {
   result.textContent = +result.textContent * -1;
-  input.setTo(input.str.replace(/(\d+\.)?\d+$/, match => match * -1));
+  const theLastNumber = /(\d+\.)?\d+$/;
+  input.setTo(input.str.replace(theLastNumber, match => match * -1));
 }
 
 document

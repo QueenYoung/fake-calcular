@@ -97,13 +97,6 @@ class Input {
       }
     }
     let result = eval(String(stack[0]));
-    // if (String(result).length > 9) {
-    //   if (Number.isSafeInteger(result)) {
-    //     result = result.toExponential();
-    //   } else {
-    //     result = result.toFixed(8);
-    //   }
-    // }
     return result;
   }
 }
